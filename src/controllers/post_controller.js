@@ -41,19 +41,20 @@ export const getPost = (req, res) => {
     .catch((error) => {
       res.send(error.message);
     });
-
-  /* const postSingular = Post.findById(req.body.id, (err, post) => {
-    if (err) return console.error(err);
-    return post;
-  });
-  res.send(postSingular); */
 };
 export const deletePost = (req, res) => {
+  Post.remove({ _id: req.params.id })
+    .then((result) => {
+      res.json({ message: 'Post deleted!' });
+    })
+    .catch((error) => {
+      res.send(error.message);
+    });
+
   /* Post.remove({ id: req.body.id }, (err) => {
     if (err) return console.error(err);
     return res.json({ message: 'Post deleted!' });
   }); */
-  res.send('delete post from zack');
 };
 export const updatePost = (req, res) => {
   // const query = { id: req.body.id };
