@@ -1,14 +1,13 @@
 import Post from '../models/post_model';
 
 // this cleans the posts because we use id instead of dangling _id
-/* and we purposefully don't return content here either
 const cleanPosts = (posts) => {
   return posts.map((post) => {
     return {
       id: post._id, title: post.title, tags: post.tags, cover_url: post.cover_url,
     };
   });
-}; */
+};
 
 export const createPost = (req, res) => {
   const post = new Post();
@@ -25,12 +24,26 @@ export const createPost = (req, res) => {
     });
 };
 export const getPosts = (req, res) => {
-  /* const postsList = Post.find((err, posts) => {
+  Post.find()
+    .then((result) => {
+      const clean = cleanPosts(result);
+      res.json({ posts: clean });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+
+  /* const postsList = Post.find.toArray((err, results) => {
+    if (err) return console.error(err);
+    return results;
+  }); */
+
+
+  /* ((err, posts) => {
     if (err) return console.error(err);
     return posts;
   });
-  res.send(postsList); */
-  res.send('posts should be returned');
+  res.json({ posts: postsList }); */
 };
 export const getPost = (req, res) => {
   /* const postSingular = Post.findById(req.body.id, (err, post) => {
