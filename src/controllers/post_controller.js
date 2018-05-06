@@ -50,14 +50,13 @@ export const deletePost = (req, res) => {
     .catch((error) => {
       res.send(error.message);
     });
-
-  /* Post.remove({ id: req.body.id }, (err) => {
-    if (err) return console.error(err);
-    return res.json({ message: 'Post deleted!' });
-  }); */
 };
 export const updatePost = (req, res) => {
-  // const query = { id: req.body.id };
-  // Post.findOneAndUpdate(query, { title: 'New title' }, callback);
-  res.send('update post from zack');
+  Post.findByIdAndUpdate(req.params.id, { title: req.body.title })
+    .then((result) => {
+      res.json({ message: 'Post updated' });
+    })
+    .catch((error) => {
+      res.send(error.message);
+    });
 };
