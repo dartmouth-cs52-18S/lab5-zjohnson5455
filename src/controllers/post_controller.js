@@ -32,26 +32,21 @@ export const getPosts = (req, res) => {
     .catch((error) => {
       res.status(500).json({ error });
     });
-
-  /* const postsList = Post.find.toArray((err, results) => {
-    if (err) return console.error(err);
-    return results;
-  }); */
-
-
-  /* ((err, posts) => {
-    if (err) return console.error(err);
-    return posts;
-  });
-  res.json({ posts: postsList }); */
 };
 export const getPost = (req, res) => {
+  Post.findById(req.params.id)
+    .then((result) => {
+      res.json({ post: result });
+    })
+    .catch((error) => {
+      res.send(error.message);
+    });
+
   /* const postSingular = Post.findById(req.body.id, (err, post) => {
     if (err) return console.error(err);
     return post;
   });
   res.send(postSingular); */
-  res.send('get post from zack');
 };
 export const deletePost = (req, res) => {
   /* Post.remove({ id: req.body.id }, (err) => {
