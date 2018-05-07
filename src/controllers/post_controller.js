@@ -32,7 +32,7 @@ export const getPosts = (req, res) => {
   Post.find()
     .then((result) => {
       const clean = cleanPosts(result);
-      res.json({ posts: clean });
+      res.json(clean);
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -41,8 +41,7 @@ export const getPosts = (req, res) => {
 export const getPost = (req, res) => {
   Post.findById(req.params.id)
     .then((result) => {
-      const clean = cleanPost(result);
-      res.json({ post: clean });
+      res.json(result);
     })
     .catch((error) => {
       res.send(error.message);
