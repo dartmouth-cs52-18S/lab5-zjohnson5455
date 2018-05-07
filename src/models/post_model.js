@@ -4,9 +4,9 @@ import mongoose, { Schema } from 'mongoose';
 
 const PostSchema = new Schema({
   title: String,
-  // cover_url: String,
-  // tags: String,
-  // content: String,
+  cover_url: String,
+  tags: String,
+  content: String,
 }, {
   toJSON: {
     virtuals: false,
