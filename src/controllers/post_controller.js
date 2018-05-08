@@ -8,12 +8,6 @@ const cleanPosts = (posts) => {
     };
   });
 };
-// cleans a singular post
-const cleanPost = (post) => {
-  return {
-    id: post._id, title: post.title, tags: post.tags, cover_url: post.cover_url,
-  };
-};
 
 export const createPost = (req, res) => {
   const post = new Post();
