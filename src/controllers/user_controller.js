@@ -21,23 +21,28 @@ export const signup = (req, res, next) => {
   // Save the new User object
   // this is similar to how you created a Post
   // and then return a token same as you did in in signin
-  User.find({ email }, (err, result) => {
-    if (err) return next(err);
-    else if (result) return next(null, true);
-    else {
-      const user = new User();
-      Object.assign(user, {
-        email, password,
-      });
-      user.save()
-        .then((result1) => {
-          res.send({ token: tokenForUser(req.user) });
-        })
-        .catch((error) => {
-          res.status(500).json({ error });
-        });
-    }
-  });
+  User.findOne({ email })
+    .then((result) => {
+      console.log(`result${result}`);
+      if (result) { return res.status(422).send('An account already exists'); } else {
+        const user = new User();
+        Object.assign(user, { email, password });
+        console.log(user);
+        user.save()
+          .then((result1) => {
+            console.log('found results');
+            res.send({ token: tokenForUser(user) });
+          })
+          .catch((error) => {
+            console.log('found an error in save');
+            res.status(500).json({ error });
+          });
+      }
+    })
+    .catch((error) => {
+      // res.status(500).json({ error });
+      return res.status(422).send('An account already exists for this email');
+    });
 };
 
 // encodes a new token for a user object
