@@ -7,7 +7,7 @@ const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
-  password: { type: String },
+  password: { type: String, required: true },
 });
 
 UserSchema.set('toJSON', {
@@ -22,18 +22,15 @@ UserSchema.pre('save', function beforeyYourModelSave(next) {
 
   // generate a salt
   // https://stackoverflow.com/questions/14588032/mongoose-password-hashing
-  const salty = bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
+  bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
     if (err) return next(err);
-    return salt;
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      if (err) return next(err);
+      user.password = hash;
+      return next();
+    });
   });
 
-  const hashy = bcrypt.hash(user.password, salty, (err, hash) => {
-    if (err) return next(err);
-    return hash;
-  });
-
-  user.password = hashy;
-  return next();
 
   // when done run the next callback with no arguments
   // call next with an error if you encounter one
@@ -41,11 +38,10 @@ UserSchema.pre('save', function beforeyYourModelSave(next) {
 });
 
 UserSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  const res = bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    if (err) return cb(err);
-    return cb(null, isMatch);
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    if (err) cb(err);
+    cb(null, isMatch);
   });
-  return res;
 };
 
 

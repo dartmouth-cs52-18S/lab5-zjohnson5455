@@ -6,6 +6,7 @@ dotenv.config({ silent: true });
 
 
 export const signin = (req, res, next) => {
+  console.log(req.user);
   res.send({ token: tokenForUser(req.user) });
 };
 
