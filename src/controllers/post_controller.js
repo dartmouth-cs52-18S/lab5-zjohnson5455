@@ -12,7 +12,7 @@ const cleanPosts = (posts) => {
 export const createPost = (req, res) => {
   const post = new Post();
   Object.assign(post, {
-    title: req.body.title, tags: req.body.tags, cover_url: req.body.cover_url, content: req.body.content,
+    title: req.body.title, tags: req.body.tags, cover_url: req.body.cover_url, content: req.body.content, author: req.user,
   });
   post.save()
     .then((result) => {
