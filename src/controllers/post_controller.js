@@ -34,6 +34,7 @@ export const getPosts = (req, res) => {
 };
 export const getPost = (req, res) => {
   Post.findById(req.params.id)
+    .populate('author')
     .then((result) => {
       res.json(result);
     })
